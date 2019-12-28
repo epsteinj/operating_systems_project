@@ -134,7 +134,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	int a = offset/BLOCK_SIZE;
 	int b = offset % BLOCK_SIZE;
 	printf("a: %d, b: %d\n", a, b);	
-	if (offset >= 1049576) {
+	if (offset >= 1048576) {
 		return 0;
 	}
 
@@ -163,8 +163,8 @@ int read_t(int inode_number, int offset, void *buf, int count)
 		return -1;
 	}
 	printf("block_end: %d block_start: %d b: %d bb: %d\n", block_end, block_start, b, bb);
-	if(offset + count > DATA_OFFSET/10) {
-		read_bytes = (DATA_OFFSET/10 - offset);	
+	if((offset + count) >= 1048576) {
+		read_bytes = (1048576 - offset);	
 	} if(block_end == block_start) {
 		read_bytes = (bb - b) + 1;
 	} else {
