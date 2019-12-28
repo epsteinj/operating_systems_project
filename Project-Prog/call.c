@@ -138,9 +138,11 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	}
 
 	if (a < 2) {
-		block_start = ip->direct_blk[a];			
+		block_start = ip->direct_blk[a];
+		printf("a < 2, block_start: %d\n", block_start);
 	} else {
-		block_start = ip->indirect_blk+(a-2);	
+		block_start = ip->indirect_blk+(a-2);
+		printf("a >= 2, block_start: %d\n", block_start);
 	}
 	
 	int aa = ((offset + count-1) / 4096);
@@ -149,8 +151,10 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	int block_end;
 	if( aa < 2) {
 		block_end = ip->direct_blk[aa];
+		printf("aa < 2, block_end: %d\n", block_end);
 	} else {
 		block_end = ip->indirect_blk + (aa-2);
+		printf("aa > 2, block_end: %d\n", block_end);
 	}
 	int currpos = lseek(fd, DATA_OFFSET + block_start * BLOCK_SIZE + b, SEEK_SET);
 	if(currpos == -1) {
