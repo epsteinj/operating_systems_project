@@ -126,9 +126,11 @@ int open_t(char *pathname)
 
 int read_t(int inode_number, int offset, void *buf, int count)
 {
-	//printf("MAX_FILE_SIZE: %d\n", MAX_FILE_SIZE);
+	//printf("FILE_SIZE: %d\n", MAX_FILE_SIZE);
 	int fd = open(HD, O_RDWR);
 	inode* ip = read_inode(fd, inode_number);
+	printf("file size: %d\n", ip->i_size);
+	printf("data blocks: %d\n", ip->i_blocks);
 	int read_bytes;
 	int block_start;
 	int a = offset/BLOCK_SIZE;
