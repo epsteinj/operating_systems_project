@@ -108,19 +108,11 @@ int open_t(char *pathname)
 		done = 0;
 		printf("cinode->file_num:%d", cinode->file_num);
 		printf("Looking for: %s\n", path_comps[y]);
-<<<<<<< HEAD
 		while (fidx < cinode->file_num) {
 			printf("p_block[%d].dir: %s\n", fidx, p_block[fidx].dir);
 			if (strcmp(p_block[fidx].dir, path_comps[y]) == 0) {
 				ninode = p_block[fidx].inode_number;
 				fidx = cinode->file_num;
-=======
-		while (fidx < cinode->file_num) {
-			printf("p_block[%d].dir: %s\n", fidx, p_block[fidx].dir);
-			if (strcmp(p_block[fidx].dir, path_comps[y]) == 0) {
-				ninode = p_block[fidx].inode_number;
-				fidx = cinode->file_num;
->>>>>>> 1c259ccb0fc72618629bbdf0db93ecf681be3177
 				printf("Done at %d\n", ninode);
 				done = 1;
 			}
