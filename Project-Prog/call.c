@@ -165,7 +165,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	printf("block_end: %d block_start: %d b: %d bb: %d\n", block_end, block_start, b, bb);
 	if((offset + count) >= 1048576) {
 		read_bytes = (1048576 - offset);	
-	} if(block_end == block_start) {
+	} else if(block_end == block_start) {
 		read_bytes = (bb - b) + 1;
 	} else {
 		read_bytes = BLOCK_SIZE*(block_end-block_start) + ((bb - b) + 1);
