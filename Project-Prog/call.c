@@ -124,12 +124,42 @@ int open_t(char *pathname)
 	return ninode;
 }
 
-int read_t(int inode_number, int offest, void *buf, int count)
+int read_t(int inode_number, int offset, void *buf, int count)
 {
+	int fd = open(HD, O_RDWR);
+	inode* ip = read_inode(fd, inode_number);
 	int read_bytes;
-	// write your code here.
-//	return read_bytes; 
-	return 1;
+	int block_start;
+	int a = offset/BLOCK_SIZE;
+	int b = offset % BLOCK_SIZE;
+	
+	if (offset >= ip->i_blocks*BLOCK_SIZE) {
+		return -1;
+	}
+
+	if (a < 2) {
+		block_start = ip->direct_blk[a];			
+	} else {
+		block_start = ip->indirect_blk+(a-2);	
+	}
+	
+	int aa = ((offset + count-1) / 4096);
+	int bb = ((offset + count-1) % 4096);
+	int block_end;
+	if( aa < 2) {
+		block_end = ip->direct_blk[aa];
+	} else {
+		block_end = ip->indirect_blk + (aa-2);
+	}
+	int currpos = lseek(fd, DATA_OFFSET + block_start * BLOCK_SIZE + b, SEEK_SET);
+	if(currpos == -1) {
+		printf("Error: lseek()\n");
+		return -1;
+	}
+	read_bytes = (BLOCK_SIZE*(block_end-block_start))+bb;
+	//buf = (void *)malloc(read_bytes);
+	read(fd, buf, read_bytes);
+	return read_bytes; 
 }
 
 // you are allowed to create any auxiliary functions that can help your implementation. But only “open_t()” and "read_t()" are allowed to call these auxiliary functions.
@@ -183,6 +213,9 @@ void print_dir_mappings(int fd, int i_number)
 	// the implementation is much easier
 	int block_number = ip->direct_blk[0];
 	int currpos=lseek(fd, DATA_OFFSET + block_number * BLOCK_SIZE, SEEK_SET);
+	if(currpos == -1) {
+		printf("lseek: error\n");
+	}
 	read(fd, p_block, BLOCK_SIZE);
 
 	int file_idx = 0;
