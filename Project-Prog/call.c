@@ -132,7 +132,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	int block_start;
 	int a = offset/BLOCK_SIZE;
 	int b = offset % BLOCK_SIZE;
-	
+	printf("a: %d, b: %d\n", a, b);	
 	if (offset >= ip->i_blocks*BLOCK_SIZE) {
 		return -1;
 	}
@@ -145,6 +145,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	
 	int aa = ((offset + count-1) / 4096);
 	int bb = ((offset + count-1) % 4096);
+	printf("aa: %d bb:%d\n", aa, bb);
 	int block_end;
 	if( aa < 2) {
 		block_end = ip->direct_blk[aa];
