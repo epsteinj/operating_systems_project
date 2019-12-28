@@ -131,7 +131,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	int read_bytes;
 	int block_start;
 	int a = offset/BLOCK_SIZE;
-	//int b = offset % BLOCK_SIZE;
+	int b = offset % BLOCK_SIZE;
 	
 	if (offset >= ip->i_blocks*BLOCK_SIZE) {
 		return -1;
@@ -144,19 +144,19 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	}
 	
 	int aa = ((offset + count-1) / 4096);
-	//int bb = ((offset + count-1) % 4096);
+	int bb = ((offset + count-1) % 4096);
 	int block_end;
 	if( aa < 2) {
 		block_end = ip->direct_blk[aa];
 	} else {
 		block_end = ip->indirect_blk + (aa-2);
 	}
-	int currpos = lseek(fd, DATA_OFFSET + block_start * BLOCK_SIZE, SEEK_SET);
+	int currpos = lseek(fd, DATA_OFFSET + block_start * BLOCK_SIZE + b, SEEK_SET);
 	if(currpos == -1) {
 		printf("Error: lseek()\n");
 		return -1;
 	}
-	read_bytes = (BLOCK_SIZE*(block_end-block_start));
+	read_bytes = (BLOCK_SIZE*((block_end-bb)-(block_start+b)));
 	//buf = (void *)malloc(read_bytes);
 	read(fd, buf, read_bytes);
 	return read_bytes; 
