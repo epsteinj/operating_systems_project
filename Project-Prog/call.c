@@ -168,7 +168,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 	} else if(block_end == block_start) {
 		read_bytes = (bb - b) + 1;
 	} else {
-		read_bytes = BLOCK_SIZE*(block_end-block_start) + ((bb - b) + 1);
+		read_bytes = BLOCK_SIZE*(block_end-block_start-1) + ((bb - b) + 1);
 	}
 	//buf = (void *)malloc(read_bytes);
 	read(fd, buf, read_bytes);
