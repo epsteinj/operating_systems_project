@@ -7,10 +7,6 @@ void print_dir_mappings(int fd, int i_number);
 
 int open_t(char *pathname)
 {
-	int inode_number;
-	// write your code here.
-	
-
 //----------parse the path components into an array of strings------------------
 	
 	int npath = 0;
@@ -36,7 +32,7 @@ int open_t(char *pathname)
 		max = cmax;
 	}
 	//printf("max: %d\n", max);
-	printf("npath: %d\n", npath);
+	//printf("npath: %d\n", npath);
 	
 	//malloc space for an array of path components
 	char **path_comps = (char **) malloc(npath * sizeof(char*));
@@ -89,8 +85,8 @@ int open_t(char *pathname)
 	int fidx;
 	int done;
 	for(y = 0; y < npath; y++) {
-		printf("Reading inode: %d \n", ninode);
-		print_dir_mappings(fd, ninode);
+		//printf("Reading inode: %d \n", ninode);
+		//print_dir_mappings(fd, ninode);
 		inode* cinode = read_inode(fd, ninode);
 		if(cinode == NULL){
 			printf("Error: failed to read root inode\n");
@@ -106,14 +102,14 @@ int open_t(char *pathname)
 		read(fd, p_block, BLOCK_SIZE);
 		fidx = 0;
 		done = 0;
-		printf("cinode->file_num:%d", cinode->file_num);
-		printf("Looking for: %s\n", path_comps[y]);
+		//printf("cinode->file_num:%d", cinode->file_num);
+		//printf("Looking for: %s\n", path_comps[y]);
 		while (fidx < cinode->file_num) {
-			printf("p_block[%d].dir: %s\n", fidx, p_block[fidx].dir);
+			//printf("p_block[%d].dir: %s\n", fidx, p_block[fidx].dir);
 			if (strcmp(p_block[fidx].dir, path_comps[y]) == 0) {
 				ninode = p_block[fidx].inode_number;
 				fidx = cinode->file_num;
-				printf("Done at %d\n", ninode);
+				//printf("Done at %d\n", ninode);
 				done = 1;
 			}
 			fidx++;
@@ -124,7 +120,7 @@ int open_t(char *pathname)
 		}
 	}
 
-	printf("Returning inode: %d\n", ninode);	
+	//printf("Returning inode: %d\n", ninode);	
 	return ninode;
 }
 
