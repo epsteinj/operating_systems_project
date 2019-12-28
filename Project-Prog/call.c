@@ -156,6 +156,7 @@ int read_t(int inode_number, int offset, void *buf, int count)
 		printf("Error: lseek()\n");
 		return -1;
 	}
+	printf("block_end: %d block_start: %d b: %d bb: %d\n", block_end, block_start, b, bb);
 	read_bytes = (BLOCK_SIZE*(block_end-block_start)-(b+BLOCK_SIZE-bb));
 	//buf = (void *)malloc(read_bytes);
 	read(fd, buf, read_bytes);
